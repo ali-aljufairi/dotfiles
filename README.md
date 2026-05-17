@@ -29,6 +29,18 @@ wsl --shutdown
 
 Then reopen the distro. Your default shell should be `fish`.
 
+
+## Homebrew install behavior
+
+The setup script installs Homebrew packages one-by-one instead of using `brew bundle`. This is intentional: if one formula is renamed, removed, or temporarily unavailable, the bootstrap continues and prints a list of failed packages near the end.
+
+Terraform is installed from HashiCorp's official tap because it is no longer available as a plain Homebrew core formula:
+
+```bash
+brew tap hashicorp/tap
+brew install hashicorp/tap/terraform
+```
+
 ## Docker Compose troubleshooting
 
 Docker Compose v2 should be available as:

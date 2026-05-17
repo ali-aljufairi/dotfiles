@@ -117,62 +117,82 @@ fi
 
 if has brew; then
   log "Installing curated Homebrew CLI tools"
-  brew update
-  brew bundle --file=- <<'BREWFILE'
-brew "awscli"
-brew "bat"
-brew "bitwarden-cli"
-brew "btop"
-brew "cargo-binstall"
-brew "croc"
-brew "deno"
-brew "docker-completion"
-brew "eza"
-brew "fd"
-brew "ffmpeg"
-brew "fzf"
-brew "gh"
-brew "git"
-brew "go"
-brew "hstr"
-brew "imagemagick"
-brew "jq"
-brew "k9s"
-brew "kubernetes-cli"
-brew "lazydocker"
-brew "lazygit"
-brew "lsd"
-brew "mpv"
-brew "neovim"
-brew "node"
-brew "nvm"
-brew "nushell"
-brew "opencode"
-brew "pandoc"
-brew "poppler"
-brew "pipx"
-brew "pnpm"
-brew "python@3.13"
-brew "qemu"
-brew "ruff"
-brew "sevenzip"
-brew "starship"
-brew "stow"
-brew "terraform"
-brew "tesseract"
-brew "tmux"
-brew "tree-sitter"
-brew "uv"
-brew "vite"
-brew "yazi"
-brew "yt-dlp"
-brew "zoxide"
-brew "zig"
-BREWFILE
+  brew update || warn "brew update failed; continuing with installs"
 
-  log "Installing Cargo Lambda"
-  if ! brew tap cargo-lambda/tap || ! brew install cargo-lambda/tap/cargo-lambda; then
-    warn "Could not install cargo-lambda from Homebrew tap. Will try cargo-binstall after Rust is available."
+  # Some tools live outside Homebrew core on Linux. Tap them first, but do not
+  # stop the full bootstrap if a tap is temporarily unavailable.
+  BREW_TAPS=(
+    cargo-lambda/tap
+    hashicorp/tap
+  )
+  for tap in "${BREW_TAPS[@]}"; do
+    brew tap "$tap" || warn "Could not tap $tap; related packages may fail"
+  done
+
+  BREW_PACKAGES=(
+    awscli
+    bat
+    bitwarden-cli
+    btop
+    cargo-binstall
+    croc
+    deno
+    docker-completion
+    eza
+    fd
+    ffmpeg
+    fzf
+    gh
+    git
+    go
+    hstr
+    imagemagick
+    jq
+    k9s
+    kubernetes-cli
+    lazydocker
+    lazygit
+    lsd
+    mpv
+    neovim
+    node
+    nvm
+    nushell
+    opencode
+    pandoc
+    poppler
+    pipx
+    pnpm
+    python@3.13
+    qemu
+    ruff
+    sevenzip
+    starship
+    stow
+    hashicorp/tap/terraform
+    tesseract
+    tmux
+    tree-sitter
+    uv
+    vite
+    yazi
+    yt-dlp
+    zoxide
+    zig
+    cargo-lambda/tap/cargo-lambda
+  )
+
+  FAILED_BREW_PACKAGES=()
+  for package in "${BREW_PACKAGES[@]}"; do
+    log "brew install $package"
+    if ! brew install "$package"; then
+      warn "brew install failed: $package"
+      FAILED_BREW_PACKAGES+=("$package")
+    fi
+  done
+
+  if ((${#FAILED_BREW_PACKAGES[@]} > 0)); then
+    warn "Some Homebrew packages failed, but setup will continue: ${FAILED_BREW_PACKAGES[*]}"
   fi
 fi
 
