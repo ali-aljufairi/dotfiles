@@ -28,3 +28,58 @@ wsl --shutdown
 ```
 
 Then reopen the distro. Your default shell should be `fish`.
+
+## Docker Compose troubleshooting
+
+Docker Compose v2 should be available as:
+
+```bash
+docker compose version
+```
+
+If setup or manual installation fails with:
+
+```bash
+E: Unable to locate package docker-compose-plugin
+```
+
+it usually means Docker's official APT repository is not enabled yet. Enable it, then install Docker Engine and the Compose plugin.
+
+### Ubuntu
+
+```bash
+sudo apt update
+sudo apt install ca-certificates curl
+
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+sudo tee /etc/apt/sources.list.d/docker.sources <<EOF
+Types: deb
+URIs: https://download.docker.com/linux/ubuntu
+Suites: $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}")
+Components: stable
+Architectures: $(dpkg --print-architecture)
+Signed-By: /etc/apt/keyrings/docker.asc
+EOF
+
+sudo apt update
+sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
+
+### Debian
+
+Use the same commands, but change the repository URI to Debian:
+
+```bash
+URIs: https://download.docker.com/linux/debian
+```
+
+Then verify:
+
+```bash
+docker compose version
+```
+
+Use `docker compose` with a space, not the older `docker-compose` command.

@@ -54,8 +54,50 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
   ruby-full \
   fish zsh \
   neovim stow sshpass telnet iperf3 \
-  docker.io docker-compose-plugin \
   shellcheck
+
+log "Installing Docker Engine and Compose plugin from Docker's official APT repository"
+DOCKER_DISTRO=""
+case "${ID}" in
+  ubuntu) DOCKER_DISTRO="ubuntu" ;;
+  debian) DOCKER_DISTRO="debian" ;;
+  *)
+    if [[ "${ID_LIKE:-}" == *ubuntu* ]]; then
+      DOCKER_DISTRO="ubuntu"
+    elif [[ "${ID_LIKE:-}" == *debian* ]]; then
+      DOCKER_DISTRO="debian"
+    fi
+    ;;
+esac
+
+if [[ -n "$DOCKER_DISTRO" ]]; then
+  sudo install -m 0755 -d /etc/apt/keyrings
+  sudo curl -fsSL "https://download.docker.com/linux/${DOCKER_DISTRO}/gpg" -o /etc/apt/keyrings/docker.asc
+  sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+  DOCKER_CODENAME="${UBUNTU_CODENAME:-${VERSION_CODENAME:-}}"
+  if [[ -z "$DOCKER_CODENAME" ]] && has lsb_release; then
+    DOCKER_CODENAME="$(lsb_release -cs)"
+  fi
+
+  if [[ -n "$DOCKER_CODENAME" ]]; then
+    sudo tee /etc/apt/sources.list.d/docker.sources >/dev/null <<EOF
+Types: deb
+URIs: https://download.docker.com/linux/${DOCKER_DISTRO}
+Suites: ${DOCKER_CODENAME}
+Components: stable
+Architectures: $(dpkg --print-architecture)
+Signed-By: /etc/apt/keyrings/docker.asc
+EOF
+    sudo apt-get update
+    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
+      docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+  else
+    warn "Could not detect distro codename; skipping Docker official repository setup."
+  fi
+else
+  warn "Could not map this distro to Docker's official APT repo; skipping Docker install."
+fi
 
 # Ubuntu names bat/fd as batcat/fdfind. Add local aliases if needed.
 mkdir -p "$HOME/.local/bin"
