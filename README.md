@@ -13,7 +13,7 @@ For a fresh WSL Ubuntu/Debian distro, this installs a curated Linux version of t
 - Shells: `fish` as default shell, `nushell`, `zsh`
 - Terminal UX: `starship`, `zoxide`, `fzf`, `bat`, `eza`, `lsd`, `ripgrep`, `fd`, `tmux`, `btop`, `yazi`
 - Dev tools: `git`, `gh`, `neovim`, `stow`, `jq`, `python`, `pipx`, `node`, `pnpm`, `deno`, `go`, `rust`, `uv`, `ruff`, `zig`
-- Cloud/DevOps: `awscli`, `kubectl`, `k9s`, `terraform`, `docker`, `docker compose`, `lazygit`, `lazydocker`
+- Cloud/DevOps: `awscli`, `kubectl`, `k9s`, `terraform`, `docker`, `docker compose`, `cargo-lambda`, `lazygit`, `lazydocker`
 - AI/agent tools: `opencode`, `gemini-cli`
 - Media/docs utilities: `ffmpeg`, `imagemagick`, `poppler`, `tesseract`, `mpv`, `pandoc`, `yt-dlp`, archive tools
 
@@ -83,3 +83,24 @@ docker compose version
 ```
 
 Use `docker compose` with a space, not the older `docker-compose` command.
+
+## Cargo Lambda troubleshooting
+
+`cargo-lambda` is installed from its official Homebrew tap:
+
+```bash
+brew tap cargo-lambda/tap
+brew install cargo-lambda/tap/cargo-lambda
+```
+
+It is intentionally not listed as `brew "cargo-lambda"` in the inline Brewfile because it is not available in Homebrew core and will fail with:
+
+```bash
+Error: No available formula with the name "cargo-lambda"
+```
+
+If the tap install fails, install it after Rust is available with:
+
+```bash
+cargo binstall cargo-lambda --no-confirm
+```

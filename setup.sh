@@ -124,7 +124,6 @@ brew "bat"
 brew "bitwarden-cli"
 brew "btop"
 brew "cargo-binstall"
-brew "cargo-lambda"
 brew "croc"
 brew "deno"
 brew "docker-completion"
@@ -170,6 +169,11 @@ brew "yt-dlp"
 brew "zoxide"
 brew "zig"
 BREWFILE
+
+  log "Installing Cargo Lambda"
+  if ! brew tap cargo-lambda/tap || ! brew install cargo-lambda/tap/cargo-lambda; then
+    warn "Could not install cargo-lambda from Homebrew tap. Will try cargo-binstall after Rust is available."
+  fi
 fi
 
 log "Installing global developer CLIs"
@@ -189,6 +193,11 @@ fi
 [[ -r "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
 if has cargo; then
   cargo install starship zoxide --locked || true
+
+  if ! has cargo-lambda && has cargo-binstall; then
+    log "Installing Cargo Lambda with cargo-binstall fallback"
+    cargo binstall cargo-lambda --no-confirm || warn "Could not install cargo-lambda with cargo-binstall"
+  fi
 fi
 
 log "Creating fish shell configuration"
