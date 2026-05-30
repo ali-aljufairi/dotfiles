@@ -2,11 +2,10 @@
 set -euo pipefail
 
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-HOME_DIR="${HOME}"
 
 if command -v sudo >/dev/null 2>&1; then
   sudo apt-get update
-  sudo apt-get install -y software-properties-common fish atuin git neovim tmux curl unzip
+  sudo apt-get install -y software-properties-common fish atuin git neovim tmux curl unzip rsync
   if apt-cache show ghostty >/dev/null 2>&1; then
     sudo apt-get install -y ghostty
   else
@@ -16,15 +15,13 @@ if command -v sudo >/dev/null 2>&1; then
   fi
 else
   apt-get update
-  apt-get install -y software-properties-common fish atuin git neovim tmux curl unzip
+  apt-get install -y software-properties-common fish atuin git neovim tmux curl unzip rsync
   if apt-cache show ghostty >/dev/null 2>&1; then
     apt-get install -y ghostty
   fi
 fi
 
-mkdir -p "$HOME_DIR/.config" "$HOME_DIR/.local/bin"
-rsync -a --delete "$REPO_DIR/home/.config/" "$HOME_DIR/.config/"
-rsync -a "$REPO_DIR/home/.local/bin/" "$HOME_DIR/.local/bin/"
+"$REPO_DIR/bootstrap/sync-home.sh" --write
 
 if command -v fish >/dev/null 2>&1; then
   chsh -s "$(command -v fish)" "$USER" || true

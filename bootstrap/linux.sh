@@ -2,7 +2,6 @@
 set -euo pipefail
 
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-HOME_DIR="${HOME}"
 
 install_pkg() {
   if command -v sudo >/dev/null 2>&1; then
@@ -12,11 +11,8 @@ install_pkg() {
   fi
 }
 
-install_pkg fish atuin ghostty git neovim kitty alacritty tmux lazygit btop
-
-mkdir -p "$HOME_DIR/.config" "$HOME_DIR/.local/bin"
-rsync -a --delete "$REPO_DIR/home/.config/" "$HOME_DIR/.config/"
-rsync -a "$REPO_DIR/home/.local/bin/" "$HOME_DIR/.local/bin/"
+install_pkg fish atuin ghostty git neovim kitty alacritty tmux lazygit btop rsync
+"$REPO_DIR/bootstrap/sync-home.sh" --write
 
 if command -v fish >/dev/null 2>&1; then
   FISH_PATH="$(command -v fish)"
