@@ -2,10 +2,6 @@
 	pushInsteadOf = http://github.com/
 	pushInsteadOf = https://github.com/
 
-[include]
-	path = ~/.gitconfig.private
-	path = ~/.gitconfig.local
-
 [commit]
 	verbose = true
 
@@ -14,3 +10,7 @@
 
 [pull]
 	rebase = false
+
+[include]
+	path = ~/.gitconfig.private
+	path = ~/.gitconfig.local

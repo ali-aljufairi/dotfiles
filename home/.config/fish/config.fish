@@ -1,4 +1,4 @@
-# Fish-first shell bootstrap for nexos
+# Fish-first shell bootstrap for dotfiles
 
 # Local bin paths
 fish_add_path -g $HOME/.local/bin
