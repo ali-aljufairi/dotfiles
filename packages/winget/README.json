@@ -1,0 +1,4 @@
+{
+  "source": "manual-export-needed-on-Windows",
+  "command": "winget export -o packages/winget/packages.json --include-versions"
+}

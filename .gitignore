@@ -1,0 +1,20 @@
+# Ignore local machine state
+.DS_Store
+*.swp
+*.swo
+*.tmp
+*.bak
+
+# Neovim state
+home/.config/nvim/.neoconf.json
+home/.config/nvim/lazy-lock.json
+archive/**/.DS_Store
+archive/**/.git
+archive/**/.git/**
+
+# Secrets / local-only files
+*.env
+*.local
+**/secrets.*
+**/*token*
+**/*session*

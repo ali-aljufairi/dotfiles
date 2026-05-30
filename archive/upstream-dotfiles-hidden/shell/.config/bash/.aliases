@@ -1,0 +1,111 @@
+#!/bin/bash
+
+# shellcheck disable=2016,2046,2164,2035
+
+# aliases
+alias v="nvim"
+alias hx="helix"
+alias lg="lazygit"
+alias md="mkdir -p"
+
+# Realod shell
+function src() {
+	exec "$SHELL"
+}
+
+function update-dotfiles() {
+
+	upgrade_packages=n
+
+	# If any argument is (-u or --upgrade), upgrade packages
+	if [[ "$*" =~ (-u|--upgrade) ]]; then
+		upgrade_packages=y
+	fi
+
+	# If upgrade_packages is y or Y, upgrade packages
+	if [[ "$upgrade_packages" =~ [yY] ]]; then
+		osInfo=("/etc/debian_version:sudo apt-get update && sudo apt-get upgrade"
+			"/etc/arch-release:sudo pacman -Syu"
+			"/etc/alpine-release:sudo apk -U upgrade"
+			"/System/Library/CoreServices/SystemVersion.plist:brew update && brew upgrade")
+
+		for info in "${osInfo[@]}"; do
+			os_file="${info%%:*}"
+			update_command="${info#*:}"
+
+			if [ -f "$os_file" ]; then
+				update_distro="$update_command"
+				break
+			fi
+		done
+
+		if [ -z "$update_distro" ]; then
+			printf "Woow! New distro!\n"
+			return 1
+		fi
+		sh -c "${update_distro}" && echo
+	fi
+
+	_lazystow() {
+		([ -n "$(git status --porcelain)" ] && command -v lazygit &>/dev/null && lazygit || true) &&
+			stow -Rvt ~ */ 2> >(grep -vE 'BUG in find_stowed_path? Absolute/relative mismatch|UNLINK|(reverts previous action)|Possible precedence issue with control flow' 1>&2)
+	}
+
+	[ -d "$HOME/.dotfiles" ] && pushd "$HOME/.dotfiles" >/dev/null &&
+		parallel '[ -d "{}" ] && echo {} && cd {} && git switch "$(basename "$(git symbolic-ref refs/remotes/origin/HEAD)")" &>/dev/null && git -c color.ui=always pull || true' ::: "$HOME/.dotfiles" "$(git submodule foreach -q sh -c pwd)" "$HOME/.dotfiles.private" &&
+		_lazystow &&
+		([ -d "$HOME/.dotfiles.private" ] && pushd "$HOME/.dotfiles.private" >/dev/null && _lazystow) || printf "\nUpdate failed!\n"
+	popd &>/dev/null
+}
+
+# tmux
+function tx() {
+	if [[ -z "$1" ]]; then
+		tmux new -As "$(basename "$PWD")" -c "$PWD"
+	elif [[ "$1" == "-a" ]]; then
+		tmux a
+	elif [[ -n "$2" ]]; then
+		tmux attach -t "$1" -c "$2" 2>/dev/null || (cd "$2" && tmux new -As "$1")
+	else
+		tmux new -As "$1"
+	fi
+}
+
+# exa
+alias \
+	exa="exa --icons" \
+	\
+	lx="exa" \
+	lxl="lx --long --group --header" \
+	lxa="lxl --all --group --header" \
+	\
+	lxd="lx --only-dirs" \
+	lxld="lxl --only-dirs" \
+	lxad="lxa --only-dirs" \
+	\
+	lxg="lxlg" \
+	lxlg="lxl --git" \
+	lxag="lxa --git" \
+	\
+	lxdg="lxldg" \
+	lxldg="lxl --only-dirs --git" \
+	lxadg="lxa --only-dirs --git"
+
+function _lxt_args() { if [[ "$1" =~ ^[0-9]+$ ]]; then echo "$1" "${@:2}"; else echo 2 "$@"; fi; }
+
+function lxt() { lx --tree --level $(_lxt_args "$@"); }
+function lxlt() { lxl --tree --level $(_lxt_args "$@"); }
+
+function lxat() { lxa --ignore-glob='.git' --tree --level $(_lxt_args "$@"); }
+function lxagt() { lxa --tree --level $(_lxt_args "$@"); }
+
+function lxdt() { lxld --tree --level $(_lxt_args "$@"); }
+function lxldt() { lxld --tree --level $(_lxt_args "$@"); }
+
+function lxadt() { lxad --ignore-glob='.git' --tree --level $(_lxt_args "$@"); }
+function lxadgt() { lxad --tree --level $(_lxt_args "$@"); }
+
+# explorer.exe
+if [ -s "/proc/version" ] && grep -qi microsoft /proc/version; then
+	alias exp="explorer.exe"
+fi

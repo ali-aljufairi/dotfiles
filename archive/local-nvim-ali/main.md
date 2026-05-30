@@ -1,0 +1,3 @@
+workbench.action.terminal.acceptSelectedSuggestion
+editor.action.inlineSuggest.jump
+selectNextSuggestion

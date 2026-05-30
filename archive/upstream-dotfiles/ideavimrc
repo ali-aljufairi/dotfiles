@@ -1,0 +1,105 @@
+""" Map leader to space ---------------------
+let mapleader=" "
+
+Plug 'preservim/nerdtree'
+
+""" Plugins  --------------------------------
+set surround
+set multiple-cursors
+set commentary
+set argtextobj
+set easymotion
+set textobj-entire
+set ReplaceWithRegister
+
+""" Plugin settings -------------------------
+let g:argtextobj_pairs="(:),{:},[:]"
+"let g:argtextobj_pairs="[:],(:),<:>"
+
+""" Common settings -------------------------
+set showmode
+set so=5
+set incsearch
+set nu
+
+""" Idea specific settings ------------------
+set ideajoin
+set ideastatusicon=gray
+set idearefactormode=keep
+set clipboard+=unnamed
+
+""" Mappings --------------------------------
+
+nnoremap <leader>f :action GotoFile<CR>
+noremap <leader>s :action FileStructurePopup<CR>
+nnoremap <leader>a :action GotoAction<CR>
+nnoremap <leader>r :action Rerun<CR>
+nnoremap <leader>mr :action Maven.Reimport<CR>
+
+"leader to go zen mode
+nnoremap <leader>z :action ToggleDistractionFreeMode<CR>
+
+nnoremap <leader>v :action SplitVertically<CR>
+nnoremap <leader>h :action SplitHorizontally<CR>
+nnoremap <leader>9 :action MoveTabDown<CR>
+nnoremap <leader>t :action ActivateTerminalToolWindow<CR>
+noremap <leader>si :source ~/.ideavimrc<CR>
+nnoremap <C-o> :action Back<CR>
+nnoremap <C-i> :action Forward<CR>
+
+" tab to switch between tabs"
+nnoremap <Tab> :action NextTab<CR>
+
+nnoremap <leader>p :action EditSourceInNewWindow<CR>
+nnoremap <leader>u :action NextWindow<CR>
+
+nnoremap <leader>g :action ActivateCommitToolWindow<CR>
+" shift tab to go previous tab"
+nnoremap <S-Tab> :action PreviousTab<CR>
+nnoremap <leader>wd :action CloseAllEditors<CR>
+nnoremap <leader>ww :action CloseContent<CR>
+sethandler <c-j>  a:vim
+sethandler <c-k>  a:vim
+
+
+nnoremap <c-h> <c-w>h
+nnoremap <c-j> <c-w>j
+nnoremap <c-k> <c-w>k
+nnoremap <c-l> <c-w>l
+
+" map open current file in project panel
+"nnoremap <leader>td :action :::TODO:::
+"map <leader>f <Plug>(easymotion-s)
+"map s <Plug>(easymotion-s)
+"map <leader>e <Plug>(easymotion-f)
+map <leader>d <Action>(Debug)
+map <c-e> :NERDTreeToggle<CR>
+map <c-i> <Action>(ShowHoverInfo)
+"map <leader>r <Action>(RenameElement)
+"map <leader>c <Action>(Stop)
+"map <leader>z <Action>(ToggleDistractionFreeMode)
+
+"map <leader>s <Action>(SelectInProjectView)
+"map <leader>a <Action>(Annotate)
+"map <leader>h <Action>(Vcs.ShowTabbedFileHistory)
+"map <S-Space> <Action>(GotoNextError)
+"map <leader>b <Action>(ToggleLineBreakpoint)
+"map <leader>o <Action>(FileStructurePopup)
+
+"HarpoonIJ setting
+nmap <leader><C-1> :action SetHarpoon1<cr>
+nmap <leader><C-2> :action SetHarpoon2<cr>
+nmap <leader><C-3> :action SetHarpoon3<cr>
+nmap <leader><C-4> :action SetHarpoon4<cr>
+
+nmap <leader>1 :action GotoHarpoon1<cr>
+nmap <leader>2 :action GotoHarpoon2<cr>
+nmap <leader>3 :action GotoHarpoon3<cr>
+nmap <leader>4 :action GotoHarpoon4<cr>
+
+"nmap <C-hr> :action ShowHarpoon<cr>
+
+nnoremap gn :action GotoNextError<CR>
+nnoremap gp :action GotoPreviousError<CR>
+""" Sourcing .vimrc -------------------------
+source ~/.vimrc

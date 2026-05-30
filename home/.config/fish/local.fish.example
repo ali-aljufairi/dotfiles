@@ -1,0 +1,4 @@
+# Copy this to local.fish and keep it out of git.
+# Example:
+# set -gx HOMEBREW_GITHUB_API_TOKEN "..."
+# set -gx SOME_API_TOKEN "..."

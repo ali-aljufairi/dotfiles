@@ -1,0 +1,5 @@
+asdcontrol-git
+blueberry
+omarchy-lazyvim
+walker-bin
+wl-screenrec
