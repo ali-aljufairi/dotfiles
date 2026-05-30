@@ -24,6 +24,11 @@ if command -q mise
     mise activate fish | source
 end
 
+# Atuin powers Ctrl-R reverse history search without replacing the normal up-arrow behavior
+if command -q atuin
+    atuin init fish --disable-up-arrow | source
+end
+
 # nvm support (optional; activate only if bass is installed)
 set -gx NVM_DIR $HOME/.config/nvm
 if command -q bass; and test -s "$NVM_DIR/nvm.sh"

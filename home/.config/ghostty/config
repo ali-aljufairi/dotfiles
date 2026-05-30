@@ -1,0 +1,31 @@
+# Ghostty config managed by nexos
+
+font-family = CaskaydiaMono Nerd Font
+font-family-bold = CaskaydiaMono Nerd Font
+font-family-italic = CaskaydiaMono Nerd Font
+font-family-bold-italic = CaskaydiaMono Nerd Font
+font-style = Regular
+font-size = 9
+cursor-style-blink = false
+
+# Prefer Fish everywhere
+command = /usr/bin/fish
+working-directory = inherit
+
+# Similar ergonomics to prior Alacritty/Kitty setup
+window-padding-x = 14
+window-padding-y = 14
+confirm-close-surface = false
+resize-overlay = never
+copy-on-select = false
+shell-integration-features = no-cursor,no-sudo,title,no-ssh-env,no-ssh-terminfo,path
+
+gtk-single-instance = false
+auto-update-channel = tip
+
+keybind = f11=toggle_fullscreen
+keybind = ctrl+shift+t=new_tab
+keybind = ctrl+shift+w=close_tab:this
+keybind = ctrl+tab=next_tab
+keybind = ctrl+shift+tab=previous_tab
+keybind = ctrl+shift+f=start_search

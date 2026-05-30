@@ -2,6 +2,7 @@
 1password-cli
 alacritty
 asdcontrol-git
+atuin
 aws-cli
 base
 base-devel
@@ -31,9 +32,11 @@ fcitx5-gtk
 fcitx5-qt
 fd
 ffmpegthumbnailer
+fish
 fontconfig
 fzf
 gdb
+ghostty
 git
 github-cli
 gnome-calculator

@@ -1,0 +1,10 @@
+# Atuin keeps shell history searchable with Ctrl-R in Fish.
+# Up-arrow remains Fish's normal history behavior because init uses --disable-up-arrow.
+
+inline_height = 20
+show_help = true
+style = "compact"
+update_check = false
+enter_accept = true
+search_mode = "fuzzy"
+filter_mode = "global"

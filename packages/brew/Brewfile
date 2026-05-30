@@ -21,6 +21,12 @@ brew "openclaw/tap/goplaces"
 brew "openclaw/tap/wacli"
 # Grep the GIF. Stick the landing
 brew "steipete/tap/gifgrep"
+# Shell history search
+brew "atuin"
+# Friendly interactive shell
+brew "fish"
+# Ghostty terminal emulator
+cask "ghostty"
 # Command-line ElevenLabs TTS with mac-style flags
 brew "steipete/tap/sag"
 brew "yakitrak/yakitrak/obsidian-cli"

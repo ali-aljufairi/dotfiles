@@ -26,6 +26,8 @@ It intentionally does **not** include notes, journaling, or CV material.
 ## Current direction
 
 - Primary shell: **Fish**
+- Reverse history search: **Atuin on `Ctrl-R`**
+- Preferred terminal: **Ghostty** (with Kitty/Alacritty configs still preserved)
 - Neovim source of truth: `home/.config/nvim`
 - Legacy/old upstream repos are preserved under `archive/` so nothing gets lost during cleanup.
 
