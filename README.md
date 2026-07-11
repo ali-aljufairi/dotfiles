@@ -25,7 +25,6 @@ It intentionally does **not** include notes, journaling, or CV material.
 - `os/`: OS notes and future overrides
 - `archive/`: imported legacy sources kept for reference during migration
 - `docs/`: migration notes and repo docs
-- `tailscale/`: tailnet policy source, applied through GitHub Actions GitOps
 
 ## Current direction
 
@@ -103,7 +102,6 @@ Good fits:
 
 Should stay out:
 - secrets and tokens
-- Tailscale API keys, OAuth credentials, and auth keys (use GitHub Actions secrets)
 - browser profiles/state
 - chat/session caches
 - large machine-local runtime state
