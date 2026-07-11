@@ -1,0 +1,76 @@
+{
+  "acls": [
+    {
+      "action": "accept",
+      "src": ["tag:server"],
+      "dst": ["ali.redha.ali@gmail.com:2222"]
+    },
+    {
+      "action": "accept",
+      "src": ["autogroup:member"],
+      "dst": ["tag:server:80", "tag:server:443"]
+    }
+  ],
+
+  "tagOwners": {
+    "tag:server": ["autogroup:admin"],
+    "tag:ci": ["autogroup:admin"]
+  },
+
+  "nodeAttrs": [
+    {
+      "target": ["*"],
+      "attr": ["drive:access"]
+    },
+    {
+      "target": ["autogroup:admin"],
+      "attr": ["drive:share", "drive:access"]
+    },
+    {
+      "target": ["autogroup:member"],
+      "attr": ["funnel"]
+    }
+  ],
+
+  "ssh": [
+    {
+      "action": "accept",
+      "src": ["autogroup:member"],
+      "dst": ["autogroup:self"],
+      "users": ["autogroup:nonroot", "root"]
+    },
+    {
+      "action": "accept",
+      "src": ["autogroup:member"],
+      "dst": ["tag:server"],
+      "users": ["autogroup:nonroot", "root"]
+    }
+  ],
+
+  "grants": [
+    {
+      "src": ["*"],
+      "dst": ["*"],
+      "app": {
+        "tailscale.com/cap/drive": [
+          {
+            "shares": ["*"],
+            "access": "rw"
+          }
+        ]
+      }
+    }
+  ],
+
+  "tests": [
+    {
+      "src": "ali.redha.ali@gmail.com",
+      "accept": ["tag:server:80", "tag:server:443"],
+      "deny": ["tag:server:8080"]
+    },
+    {
+      "src": "tag:server",
+      "accept": ["ali.redha.ali@gmail.com:2222"]
+    }
+  ]
+}
