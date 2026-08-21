@@ -23,6 +23,11 @@ fi
 
 "$REPO_DIR/bootstrap/sync-home.sh" --write
 
+# Bootstrap nvim plugins (lazy.nvim) so first launch is ready to use
+if command -v nvim >/dev/null 2>&1; then
+  nvim --headless "+Lazy! restore" +qa >/dev/null 2>&1 || echo "WARN: lazy restore had warnings; run :Lazy inside nvim to inspect"
+fi
+
 if command -v fish >/dev/null 2>&1; then
   chsh -s "$(command -v fish)" "$USER" || true
 fi
